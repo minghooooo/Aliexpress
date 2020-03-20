@@ -1,5 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
+import re
+
 def getHTML(url):
     header = {
        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36',
@@ -14,6 +16,17 @@ def getHTML(url):
     except:
         return "exception"
 
+def parseGoodsHTML(alist):
+    hrefDic = {}
+    for a in alist:
+        aHTML = getHTML(a['herf'])#进入分类html
+        #用正则抓取商品名"title"以及"productDetailUrl"存放进临时list变量
+        hrefDic['ClassName'] =  re.match(r'\"title\":\".+\"',a)
+        hrefDic['ClassUrl'] = re.match(r'\"productDetailUrl\":\".+\"',a)
+        #进入"productDetailUrl"
+        # 判断是否爬取完当页商品，爬完则在aHTML中获取下一页url
+        NextPage()
+
 def parseHTML(html):
     aList = []
     soup = BeautifulSoup(html,'html.parser')
@@ -23,21 +36,16 @@ def parseHTML(html):
         aList.append(A)
     return aList
     
-    print(aList)
-
+    # print(aList)
+#   plt = re.findall(r'\"view_price\":\"\d+\.\d*\"',html)
+#         tlt = re.findall(r'\"raw_title\":\".*?\"',html)
 def parseGoods(url):
     # 进入,"productDetailUrl"
     # 用正则去获取商品信息
     # 以csv形式保存商品信息
     pass
 
-def parseGoodsHTML(alist):
-     for a in aList:
-        aHTML = getHTML(a['herf'])#进入分类html
-        #用正则抓取商品名"title"以及"productDetailUrl"存放进临时list变量
-        #进入"productDetailUrl"
-        # 判断是否爬取完当页商品，爬完则在aHTML中获取下一页url
-        NextPage()
+
 
 def NextPage():
     # 获取下一页
