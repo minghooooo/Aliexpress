@@ -94,19 +94,21 @@ def parseGoods(url, list, dir):
         return "exception"
 
     # 用正则去获取商品信息
-    # product['id'] = re.findall(r'/(\d+)\.html', html)[0]
-    # product['keyword'] = re.findall(r'"keywords":"([\w./?=\-&,\s°]+)', html)[0]
-    # product['imagePath']=re.findall(r'"imagePath":"([\w./?=\-&,\s°:✓]+)',html)[0]
-    # product['color'] = '\n'.join(re.findall(r'"propertyValueDefinitionName":"([\w$\s\.-]+)', html))
-    # product['total'] = re.findall(r'totalAvailQuantity":([\w$\s\.-]+)', html)[0]
+    # href = re.match(r'"detailPageUrl":"//([\w$\s\.-/]+)"', html)
+    # title = re.match(r'"title":"([\w./?=\-&,\s]+)"', html)  # 商品名称
+    # like = re.match(r'"itemWishedCount":([\d]+)', html)  # 收藏数
+    # comments = re.match(r'"totalValidNum":(\d+)', html)  # 评论数
+    # star = re.match(r'"averageStar":(\d+\.\d*)', html)  # 星级
+    # tradeCount = re.match(r'"tradeCount":(\d+)', html)  # 订单数、
+    # price = re.match(r'"formatedActivityPrice":"(US\s\$\d+\.\d+\s-\s\d+\.\d+)"', html)  # 价格
     product = {}
-    product['href'] = re.findall(r'"detailPageUrl":"//([\w$\s\.-/]+)', html)
-    product['title'] = re.findall(r'"title":"([\w./?=\-&,\s]+)', html)[0]  # 商品名称
-    product['like'] = re.findall(r'"itemWishedCount":([\d]+)', html)[0]  # 收藏数
-    product['comments'] = re.match(r'"totalValidNum":\d+', html)  # 评论数
-    product['star'] = re.match(r'"averageStar":\d+\.\d*', html)  # 星级
-    product['tradeCount'] = re.match(r'"^tradeCount":\d+', html)  # 订单数、
-    product['price'] = re.match(r'"formatedActivityPrice":"US"', html)  # 价格
+    product['href'] = re.match(r'"detailPageUrl":"//([\w$\s\.-/]+)"', html)
+    product['title'] = re.match(r'"title":"([\w./?=\-&,\s]+)"', html)  # 商品名称
+    product['like'] = re.match(r'"itemWishedCount":([\d]+)', html)  # 收藏数
+    product['comments'] = re.match(r'"totalValidNum":(\d+)', html)  # 评论数
+    product['star'] = re.match(r'"averageStar":(\d+\.\d*)', html)  # 星级
+    product['tradeCount'] = re.match(r'"tradeCount":(\d+)', html)  # 订单数、
+    product['price'] = re.match(r'"formatedActivityPrice":"(US\s\$\d+\.\d+\s-\s\d+\.\d+)"', html)  # 价格
     list.append(product)
     file_dir1 = os.path.join(dir, product['title']+'.html')
     with open(file_dir1, 'wb') as fp1:
