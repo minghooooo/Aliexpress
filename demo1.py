@@ -49,7 +49,9 @@ def parseGoodsHTML(alist,neededDepth):
             writer =csv.DictWriter(fp,GoodsHeader)
             writer.writeheader()
             writer.writerows(GLs)
-
+        #保存html文件
+        with open(a.string+'.html','wb') as fp1:
+            fp1.write(aHTML)
         
 
 def parseHTML(html):
@@ -80,14 +82,14 @@ def parseGoods(url,list):
         return "exception"
     
     # 用正则去获取商品信息
-    product = {}
     # product['id'] = re.findall(r'/(\d+)\.html', html)[0]
-    product['href']=re.findall(r'"detailPageUrl":"//([\w$\s\.-/]+)',html)
-    product['title'] = re.findall(r'"title":"([\w./?=\-&,\s]+)', html)[0]#商品名称
     # product['keyword'] = re.findall(r'"keywords":"([\w./?=\-&,\s°]+)', html)[0]
     # product['imagePath']=re.findall(r'"imagePath":"([\w./?=\-&,\s°:✓]+)',html)[0]
     # product['color'] = '\n'.join(re.findall(r'"propertyValueDefinitionName":"([\w$\s\.-]+)', html))
     # product['total'] = re.findall(r'totalAvailQuantity":([\w$\s\.-]+)', html)[0]
+    product = {}
+    product['href']=re.findall(r'"detailPageUrl":"//([\w$\s\.-/]+)',html)
+    product['title'] = re.findall(r'"title":"([\w./?=\-&,\s]+)', html)[0]#商品名称
     product['like'] = re.findall(r'"itemWishedCount":([\d]+)', html)[0]#收藏数
     product['comments'] = re.match(r'"totalValidNum":\d+',html)#评论数
     product['star'] = re.match(r'"averageStar":\d+\.\d*',html)#星级
